@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.08
+  m_FogDensity: 0.04
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.21176471, g: 0.2404822, b: 0.25882354, a: 1}
@@ -131,8 +131,6 @@ GameObject:
   m_Component:
   - component: {fileID: 325719986}
   - component: {fileID: 325719987}
-  - component: {fileID: 325719988}
-  - component: {fileID: 325719989}
   m_Layer: 0
   m_Name: CubeContainer
   m_TagString: Untagged
@@ -166,35 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31378f2b3590e41d1af00ad5a6464328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &325719988
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325719985}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &325719989
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325719985}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +365,7 @@ AudioSource:
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 1
-  BypassListenerEffects: 1
+  BypassListenerEffects: 0
   BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
