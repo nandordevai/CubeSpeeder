@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
-public class ShipGenerator : MonoBehaviour
+public class Ship : MonoBehaviour
 {
+    [SerializeField]
+    private float moveSpeed;
+
     Vector3[] vertices;
     int[] triangles;
     Mesh mesh;
-    private float moveSpeed = 0.25f;
+    Vector3 startPosition;
+    private float initialSpeed = 0.25f;
 
     void Start()
     {
         mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        MeshFilter mf = GetComponent<MeshFilter>();
+        mf.mesh = mesh;
+        Bounds bounds = mf.sharedMesh.bounds;
+        BoxCollider collider = mf.gameObject.AddComponent<BoxCollider>();
+        collider.center = bounds.center;
+        collider.size = bounds.size;
         CreateShip();
         UpdateMesh();
     }
@@ -47,7 +56,8 @@ public class ShipGenerator : MonoBehaviour
             6, 7, 8,
             9, 10, 11
         };
-        transform.position = new Vector3(0, 0.5f, -9);
+        startPosition = new Vector3(0, 0.5f, -9);
+        transform.position = startPosition;
         transform.localScale = new Vector3(.55f, .3f, .3f);
     }
 
@@ -63,7 +73,22 @@ public class ShipGenerator : MonoBehaviour
     {
         transform.position += moveSpeed * new Vector3(Input.GetAxisRaw("Horizontal"), 0, 1);
         if (transform.position.z >= 50) {
-            moveSpeed = 0;
+            moveSpeed = 0f;
         }
+    }
+
+    void OnCollisionEnter(Collision c)
+    {
+        MoveToStart();
+    }
+
+    public void MoveToStart()
+    {
+        transform.position = startPosition;
+    }
+
+    public void SetDefaultSpeed()
+    {
+        moveSpeed = initialSpeed;
     }
 }

@@ -43,6 +43,7 @@ public class BoxGenerator : MonoBehaviour
         box.GetComponent<Renderer>().material.color = new Color(255, 255, 255);
         MeshRenderer mr = box.GetComponent<MeshRenderer>();
         mr.material = new Material(Shader.Find("Diffuse"));
+        box.AddComponent<BoxCollider>();
     }
 
     void Update()
