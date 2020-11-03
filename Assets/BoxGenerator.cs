@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BoxGenerator : MonoBehaviour
 {
+    public GameObject pillarPrefab;
+
     GameObject container;
 
     void Start()
@@ -16,7 +18,7 @@ public class BoxGenerator : MonoBehaviour
         mr.material = new Material(Shader.Find("Diffuse"));
         mr.material.color = Color.HSVToRGB(.6f, 0.9f, 1f);
         AddSides();
-        AddCubes();
+        AddPillars();
     }
 
     public void Rebuild()
@@ -25,27 +27,31 @@ public class BoxGenerator : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        AddCubes();
+        AddPillars();
     }
 
     void AddSides()
     {
         float z = -20;
+        float y = 0;
         while (z < 100)
         {
-            CreateSideBoxAt(-20, 0, z);
-            CreateSideBoxAt(20, 0, z);
-            z += 1;
+            y = Random.value / 2f - 0.5f;
+            AddPillarAt(-20, y, z, 6);
+            y = Random.value / 2f - 0.5f;
+            AddPillarAt(20, y, z, 6);
+            z += .8f;
         }
         float x = -20;
         while (x < 20)
         {
-            CreateSideBoxAt(x, 0, 100);
-            x += 1;
+            y = Random.value / 2f - 0.5f;
+            AddPillarAt(x, y, 100, 6);
+            x += .8f;
         }
     }
 
-    void AddCubes()
+    void AddPillars()
     {
         float z = 0;
         while (z < 50)
@@ -53,46 +59,43 @@ public class BoxGenerator : MonoBehaviour
             float x = -20;
             while (x < 14)
             {
-                x += (Random.value + 1.5f) * 2;
-                CreateBoxAt(x, 0, z);
+                x += (Random.value + 1.5f) * 2f;
+                int height = RandomHeight();
+                float y = Random.value / 2f - 0.5f;
+                AddPillarAt(x, y, z, height);
             }
             z += 2;
         }
     }
 
-    private float RandomHeight(int min = 0)
+    void AddPillarAt(float x, float y, float z, int height) {
+        int scale = 500;
+        Mesh mesh = pillarPrefab.GetComponentsInChildren<MeshFilter>()[0].sharedMesh;
+        float unitHeight = mesh.bounds.size.y * (float)scale;
+        for (int i = 0; i < height; i++)
+        {
+            float xOffset = Random.value / 8;
+            float zOffset = Random.value / 8;
+            GameObject pillar = Instantiate(
+                pillarPrefab,
+                new Vector3(x + xOffset, y + i * unitHeight, z + zOffset),
+                Quaternion.identity
+            );
+            pillar.transform.localScale = new Vector3(scale, scale, scale);
+            int theta = (int)Mathf.Floor(Random.value * 3) * 90;
+            pillar.transform.Rotate(Vector3.up * theta);
+            pillar.transform.SetParent(container.transform);
+        }
+    }
+
+    private int RandomHeight(int min = 0)
     {
-        float v1 = Random.value * 4;
-        float v2 = Random.value * 4;
+        int v1 = (int)Mathf.Floor(Random.value * 4);
+        int v2 = (int)Mathf.Floor(Random.value * 4);
         if (v1 < v2)
             return v1 + min;
         else
             return v2 + min;
-    }
-
-    private void CreateSideBoxAt(float x, float y, float z)
-    {
-        float height = RandomHeight(4);
-        _CreateBoxAt(x, y, z, height);
-    }
-
-    private void CreateBoxAt(float x, float y, float z)
-    {
-        float height = RandomHeight();
-        GameObject box = _CreateBoxAt(x, y, z, height);
-        box.transform.SetParent(container.transform);
-    }
-
-    private GameObject _CreateBoxAt(float x, float y, float z, float height)
-    {
-        GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        box.transform.localScale = new Vector3(1, height, 1);
-        box.transform.position = new Vector3(x, y + height / 2, z);
-        box.GetComponent<Renderer>().material.color = Color.HSVToRGB(0f, 0f, .9f);
-        MeshRenderer mr = box.GetComponent<MeshRenderer>();
-        mr.material = new Material(Shader.Find("Diffuse"));
-        box.AddComponent<BoxCollider>();
-        return box;
     }
 
     void Update()
