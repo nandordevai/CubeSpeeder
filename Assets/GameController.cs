@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,12 +8,14 @@ public class GameController : MonoBehaviour
     new GameObject camera;
     LevelBuilder builder;
     Vector3 cameraStartPosition = new Vector3(0, 1.8f, -11f);
+    GameObject startText;
 
     void Start()
     {
         ship = GameObject.Find("Ship").GetComponent<Ship>();
         camera = GameObject.Find("Camera");
         builder = GameObject.Find("CubeContainer").GetComponent<LevelBuilder>();
+        startText = GameObject.Find("StartText");
         ship.onCollision.AddListener(Restart);
     }
 
