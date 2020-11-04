@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxGenerator : MonoBehaviour
+public class LevelBuilder : MonoBehaviour
 {
     public GameObject pillarPrefab;
 
     GameObject container;
+    int scale = 500;
 
     void Start()
     {
@@ -27,6 +28,7 @@ public class BoxGenerator : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        AddSides();
         AddPillars();
     }
 
@@ -69,7 +71,6 @@ public class BoxGenerator : MonoBehaviour
     }
 
     void AddPillarAt(float x, float y, float z, int height) {
-        int scale = 500;
         Mesh mesh = pillarPrefab.GetComponentsInChildren<MeshFilter>()[0].sharedMesh;
         float unitHeight = mesh.bounds.size.y * (float)scale;
         for (int i = 0; i < height; i++)
