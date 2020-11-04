@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
         ship = GameObject.Find("Ship").GetComponent<Ship>();
         camera = GameObject.Find("Camera");
         builder = GameObject.Find("CubeContainer").GetComponent<LevelBuilder>();
+        ship.onCollision.AddListener(Restart);
     }
 
     void Update()
@@ -26,8 +27,15 @@ public class GameController : MonoBehaviour
             Regenerate();
 
         float horizontalMove = Input.GetAxisRaw("Horizontal");
+        float smooth = 5.0f;
+
         camera.transform.position += ship.moveSpeed * new Vector3(horizontalMove, 0, 1);
-        // transform.Rotate(Vector3.forward * horizontalMove);
+        Quaternion target = Quaternion.Euler(0, 0, -horizontalMove * 30f);
+        ship.transform.rotation = Quaternion.Slerp(
+            ship.transform.rotation,
+            target,
+            Time.deltaTime * smooth
+        );
         ship.transform.position += ship.moveSpeed * new Vector3(horizontalMove, 0, 1);
         if (ship.transform.position.z >= 50)
         {

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using System.Linq;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ using UnityEngine;
 public class Ship : MonoBehaviour
 {
     public float moveSpeed = 0;
+    public UnityEvent onCollision = new UnityEvent();
+
     Vector3[] vertices;
     int[] triangles;
     Mesh mesh;
@@ -67,6 +70,7 @@ public class Ship : MonoBehaviour
     {
         StopMoving();
         MoveToStart();
+        onCollision.Invoke();
     }
 
     public void Pause()
