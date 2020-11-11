@@ -5,7 +5,6 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     Ship ship;
-    new GameObject camera;
     LevelBuilder builder;
     Vector3 cameraStartPosition = new Vector3(0, 1.8f, -11f);
     GameObject startText;
@@ -13,7 +12,6 @@ public class GameController : MonoBehaviour
     void Start()
     {
         ship = GameObject.Find("Ship").GetComponent<Ship>();
-        camera = GameObject.Find("Camera");
         builder = GameObject.Find("CubeContainer").GetComponent<LevelBuilder>();
         startText = GameObject.Find("StartText");
         ship.onCollision.AddListener(Restart);
@@ -31,7 +29,7 @@ public class GameController : MonoBehaviour
         float horizontalMove = Input.GetAxisRaw("Horizontal");
         float smooth = 5.0f;
 
-        camera.transform.position += ship.moveSpeed * new Vector3(horizontalMove, 0, 1);
+        GetComponent<Camera>().transform.position += ship.moveSpeed * new Vector3(horizontalMove, 0, 1);
         Quaternion target = Quaternion.Euler(0, 0, -horizontalMove * 30f);
         ship.transform.rotation = Quaternion.Slerp(
             ship.transform.rotation,
@@ -60,6 +58,6 @@ public class GameController : MonoBehaviour
     {
         ship.StopMoving();
         ship.MoveToStart();
-        camera.transform.position = cameraStartPosition;
+        GetComponent<Camera>().transform.position = cameraStartPosition;
     }
 }
