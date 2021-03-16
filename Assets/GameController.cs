@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour
     LevelBuilder builder;
     Vector3 cameraStartPosition = new Vector3(0, 1.8f, -11f);
     GameObject startText;
+	List<Joycon> joycons;
+    Joycon j;
 
     void Start()
     {
@@ -15,6 +17,9 @@ public class GameController : MonoBehaviour
         builder = GameObject.Find("CubeContainer").GetComponent<LevelBuilder>();
         startText = GameObject.Find("StartText");
         ship.onCollision.AddListener(Restart);
+        joycons = JoyconManager.Instance.j;
+		// if (joycons.Count > 0)
+		// 	j = joycons[0];
     }
 
     void Update()
@@ -25,8 +30,11 @@ public class GameController : MonoBehaviour
             Restart();
         if (Input.GetKeyDown(KeyCode.Q))
             Regenerate();
-
-        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        float horizontalMove = 0f;
+        if (joycons.Count > 0)
+            horizontalMove = j.GetStick()[0];
+        else
+            horizontalMove = Input.GetAxisRaw("Horizontal");
         float smooth = 5.0f;
 
         GetComponent<Camera>().transform.position += ship.moveSpeed * new Vector3(horizontalMove, 0, 1);
