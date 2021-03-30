@@ -4,17 +4,17 @@ using UnityEngine.Events;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof (MeshFilter))]
+[RequireComponent(typeof(MeshFilter))]
 public class Ship : MonoBehaviour
 {
     public float moveSpeed = 0;
     public UnityEvent onCollision = new UnityEvent();
+    public float initialSpeed = 0.25f;
 
     Vector3[] vertices;
     int[] triangles;
     Mesh mesh;
     Vector3 startPosition;
-    private float initialSpeed = 0.25f;
     MeshFilter mf;
     bool finished = false;
 
